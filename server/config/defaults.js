@@ -1,13 +1,22 @@
 module.exports = {
-    records : 1,
+    records : 1000,
+    collection: 'stoRaRo',
     apis: {
         'heroes' : {
             api: 'heroes',
-            db: 'hero-api'
+            db: 'hero-api',
+            fields: {   // PUT data fields here. If FORM field corresponds DB field - use 'FIELD_NAME': false or 'FIELD_NAME_FORM': 'FIELD_NAME_DB'
+                'id': false,
+                'name': false
+            }
         },
         'notes' : {
-            api: 'heroes',
-            db: 'note-api'
+            api: 'notes',
+            db: 'notes',
+            fields: {
+                'text': 'body', 
+                'title': 'title'
+            }
         },        
     }
   };

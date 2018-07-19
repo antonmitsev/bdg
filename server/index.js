@@ -10,11 +10,12 @@ const port = 8000;
 
 //Mega important :)
 app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.text({type: 'application/json'}));
 
 MongoClient.connect(db.url, (err, database) => {
     if (err) return console.log(err)
     // Make sure you add the database name and not the collection name
-    let db = database.db("note-api")
+    let db = database.db(defaults.collection);
     require('./app/routes')(app, db);
   
     app.listen(port, () => {
