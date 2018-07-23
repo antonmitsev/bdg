@@ -1,0 +1,17 @@
+::ng-deep
+#keyboard {
+    display: flex;
+    flex-direction: row;
+    app-button {
+        padding: 1em;
+        background-color: rgba(230,220,210, 0.3);
+        cursor: pointer;
+        border: 10px solid white;
+        flex-basis: 200%;
+        display: flex;
+        .button-0 {
+            flex-basis: 400%;
+        }
+    }
+    
+}

@@ -1,0 +1,11 @@
+<app-heroes></app-heroes>
+<input [(ngModel)]="screen"/>
+<div id="keyboard">
+  <app-button 
+    *ngFor="let k of getKeys()" 
+    [key]="k" 
+    (keyPress)="keyPressed($event)"
+    (click)="keyPressed(k)"
+    [ngClass]="'button-' + ((keys[k].class) ? keys[k].class : k)">
+  ></app-button>
+</div>
