@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
@@ -9,9 +9,14 @@ import { HeroService } from '../hero.service';
   styleUrls: ['./heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
+  @Output() emit: EventEmitter<string> = new EventEmitter();
   heroes: Hero[];
 
   constructor(private heroService: HeroService) { }
+
+  public save(_id: string): void {
+    this.emit.emit(_id);
+  }
 
   ngOnInit() {
     this.getHeroes();

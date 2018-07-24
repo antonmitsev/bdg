@@ -1,4 +1,7 @@
-<app-heroes></app-heroes>
+<app-heroes 
+  (emit)="save($event)"
+></app-heroes>
+
 <input [(ngModel)]="screen"/>
 <div id="keyboard">
   <app-button 

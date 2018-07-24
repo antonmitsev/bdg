@@ -13,6 +13,10 @@ export class KeyboardComponent implements OnInit {
   ngOnInit(){
   }
 
+  public save($event){
+    console.log($event, this.screen);
+  }
+
   constructor() {
     this.screen = '0';
     this.keys = [
