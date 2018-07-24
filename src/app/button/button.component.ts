@@ -7,11 +7,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ButtonComponent implements OnInit {
   @Input() public key: object;
-  @Output() keyPress = new EventEmitter<string>();
-
-  press(key) {
-    this.keyPress.emit(key);
-  }
 
   constructor() { 
   }
