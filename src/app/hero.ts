@@ -1,4 +1,5 @@
 export class Hero {
-  _id: string;
-  name: string;
+  _id?: string;
+  name?: string;
+  data?: object[];
 }

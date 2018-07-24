@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Button } from '../button';
+import { Hero }         from '../hero';
+import { HeroService }  from '../hero.service';
+
 
 @Component({
   selector: 'app-keyboard',
@@ -9,11 +12,18 @@ import { Button } from '../button';
 export class KeyboardComponent implements OnInit {
   public keys: Button[];
   public screen: string;
+  
 
   ngOnInit(){
   }
 
-  constructor() {
+  public save($event){
+    console.log($event);
+    this.heroService.updateHero({_id: $event})
+      .subscribe(() => this.c());
+  }
+
+  constructor(private heroService: HeroService) {
     this.screen = '0';
     this.keys = [
       {
@@ -105,5 +115,6 @@ export class KeyboardComponent implements OnInit {
       this.num(parseInt(0 + obj.text));
     }
   }
+
 
 }
