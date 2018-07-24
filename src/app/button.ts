@@ -1,5 +1,5 @@
 export class Button {
   text: string;
-  cls: string;
-  content: () => void;
+  class?: string;
+  content?: () => void;
 }

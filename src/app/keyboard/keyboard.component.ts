@@ -7,8 +7,7 @@ import { Button } from '../button';
   styleUrls: ['./keyboard.component.scss']
 })
 export class KeyboardComponent implements OnInit {
-  public keys: object;
-  public keys2: number [];
+  public keys: Button[];
   public screen: string;
 
   ngOnInit(){
