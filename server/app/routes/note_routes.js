@@ -30,6 +30,7 @@ module.exports = function(app, db) {
     app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Referer");
+        res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
         next();
     });
 
@@ -103,7 +104,7 @@ module.exports = function(app, db) {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
         const note = { text: req.body.body, title: req.body.title };
-        db.collection('notes').update(details, note, (err, result) => {
+        db.collection(dbName).update(details, note, (err, result) => {
           if (err) {
               res.send({'error':'An error has occurred'});
           } else {
