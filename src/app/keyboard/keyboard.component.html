@@ -1,11 +1,13 @@
-<app-heroes></app-heroes>
+<app-heroes 
+  (emit)="save($event)"
+></app-heroes>
+
 <input [(ngModel)]="screen"/>
 <div id="keyboard">
   <app-button 
-    *ngFor="let k of getKeys()" 
-    [key]="k" 
-    (keyPress)="keyPressed($event)"
-    (click)="keyPressed(k)"
-    [ngClass]="'button-' + ((keys[k].class) ? keys[k].class : k)">
+    *ngFor="let key of keys" 
+    [key]="key" 
+    (click)="keyPressed(key)"
+    [ngClass]="'button-' + ((key.class) ? key.class : key.text)">
   ></app-button>
 </div>

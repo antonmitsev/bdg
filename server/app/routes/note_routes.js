@@ -30,6 +30,7 @@ module.exports = function(app, db) {
     app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Referer");
+        res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH");
         next();
     });
 
@@ -92,6 +93,7 @@ module.exports = function(app, db) {
 
         db.collection(dbName).insert(noteToAdd, (err, result) => {
             if (err) { 
+                logger(err);
                 res.send({ 'error': 'An error has occurred' }); 
             } else {
                 res.send(result.ops[0]);
@@ -100,18 +102,34 @@ module.exports = function(app, db) {
     });
 
     app.put('/api/:api/:id', (req, res) => {
+/*         res.send({'error':'Service N/A'});
+        return; */
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
-        const note = { text: req.body.body, title: req.body.title };
-        db.collection('notes').update(details, note, (err, result) => {
+        
+        db.collection(dbName).findOneAndUpdate(details, noteToAdd, (err, result) => {
           if (err) {
+              logger(err);
               res.send({'error':'An error has occurred'});
           } else {
-              res.send(note);
+              res.send(noteToAdd);
           } 
         });
       });  
       
+      app.patch('/api/:api/:id', (req, res) => {
+        const id = req.params.id;
+        const details = { '_id': new ObjectID(id) };
+        //db.collection(dbName).findOneAndUpdate(details, {$inc: {'money': 15.23}, $set: {'name4': 'Meme41'}}, (err, result) => {
+        db.collection(dbName).findOneAndUpdate(details, {$set: noteToAdd}, (err, result) => {
+          if (err) {
+              logger(err);
+              res.send({'error':'An error has occurred'});
+          } else {
+              res.send(noteToAdd);
+          } 
+        });
+      });  
     
 
 };

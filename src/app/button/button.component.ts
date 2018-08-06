@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Button } from '../button';
 
 @Component({
   selector: 'app-button',
@@ -6,12 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnInit {
-  @Input() public key: object;
-  @Output() keyPress = new EventEmitter<string>();
-
-  press(key) {
-    this.keyPress.emit(key);
-  }
+  @Input() public key: Button;
 
   constructor() { 
   }

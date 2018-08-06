@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Button } from '../button';
+import { Hero }         from '../hero';
+import { HeroService }  from '../hero.service';
+
 
 @Component({
   selector: 'app-keyboard',
@@ -6,38 +10,79 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./keyboard.component.scss']
 })
 export class KeyboardComponent implements OnInit {
-  public keys: object;
-  public keys2: number [];
+  public keys: Button[];
   public screen: string;
+  
 
-  constructor() {
+  ngOnInit(){
+  }
+
+  public save($event){
+    console.log($event);
+    this.heroService.updateHero({_id: $event})
+      .subscribe(() => this.c());
+  }
+
+  constructor(private heroService: HeroService) {
     this.screen = '0';
-    this.keys = {
-      '0': {},
-      '1': {},
-      '2': {},
-      '3': {},
-      '4': {},
-      '5': {},
-      '6': {},
-      '7': {},
-      '8': {},
-      '9': {},
-      ',': {
+    this.keys = [
+      {
+        text: 'c',
+        class: 'c',
+        content: this.c
+      },
+      {
+        text: '<=',
+        class: 'e1',
+        content: this.back
+      },
+      {
+        text: '7'
+      },
+      {
+        text: '8'
+      },
+      {
+        text: '9'
+      },
+      {
+        text: '4'
+      },
+      {
+        text: '5'
+      },
+      {
+        text: '6'
+      },
+      {
+        text: '1'
+      },
+      {
+        text: '2'
+      },
+      {
+        text: '3'
+      },
+      {
+        text: '0',
+        class: 'b2'
+      },
+      {
+        text: ',',
         class: 'dot',
         content: this.dot
-      },
-      '<=': {
-        class: 'back',
-        content: this.back
       }
-    }
-   }
-  
+    ];
+  }
+
   private dot(): void {
     if(this.screen != '' && this.screen.indexOf('.') < 0){
       this.screen += '.';
     }
+  }
+
+  private c(): void {
+    this.screen = '0';
   }
 
   private back(): void {
@@ -63,20 +108,13 @@ export class KeyboardComponent implements OnInit {
     );
   }
 
-  public keyPressed(key: string): void {
-    var obj = this.keys[key];
+  public keyPressed(obj: Button): void {
     if(typeof(obj.content) === 'function'){
       obj.content.apply(this);
     }else{
-      this.num(parseInt(0 + key));
+      this.num(parseInt(0 + obj.text));
     }
   }
 
-   getKeys() : Array<string> {
-    return Object.keys(this.keys);
-   }
-
-  ngOnInit() {
-  }
 
 }

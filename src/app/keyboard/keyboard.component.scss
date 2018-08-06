@@ -1,16 +1,23 @@
 ::ng-deep
 #keyboard {
-    display: flex;
-    flex-direction: row;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
     app-button {
+        display: inline-block;
+        width:33%;
+        margin: 0 0.15%;
         padding: 1em;
         background-color: rgba(230,220,210, 0.3);
         cursor: pointer;
         border: 10px solid white;
-        flex-basis: 200%;
-        display: flex;
-        .button-0 {
-            flex-basis: 400%;
+        &.button {
+            &-e1{
+                margin-left: 33.45%;
+            }
+            &-b2{
+                width: 66.3%;
+            }
         }
     }
     
