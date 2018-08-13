@@ -35,12 +35,14 @@ module.exports = function(app, db) {
     });
 
     app.use('/api/:api/:id?', function(req, res, next){
+        console.log('Entered!');
         api = req.params.api;
         if(defaults.apis[api]){
             dbName = defaults.apis[api].db;
             fields = defaults.apis[api].fields;
-            noteToAdd = req.body.getAllowedFields(fields);
-            console.log(noteToAdd, req.body);
+            noteToAdd = req.rawBody
+            //req.rawBody.getAllowedFields(fields);
+            //console.log(noteToAdd, req.body);
             next();
         }else{
             res.send({'error':'Api not found: ' + api + '!'});
@@ -49,6 +51,7 @@ module.exports = function(app, db) {
     });
 
     app.get('/api/:api', (req, res) => {
+        console.log('GET!');
         let page = parseInt('0' + req.query.page);
         let records = parseInt('0' + req.query.records);
         if(records <= 0){
@@ -66,8 +69,17 @@ module.exports = function(app, db) {
 
 
     app.get('/api/:api/:id', (req, res) => {
+        console.log('Get/ID!');
         const id = req.params.id;
-        const details = { '_id': new ObjectID(id) };
+
+        let details = {};
+        try {
+            const details = { '_id': new ObjectID(id) };
+        } catch(e) {
+            console.log(e);
+            const details = { 'month': parseInt(id) };
+        }
+
             db.collection(dbName).findOne(details, (err, item) => {
             if (err) {
                 res.send({'error':'An error has occurred'});
@@ -90,6 +102,7 @@ module.exports = function(app, db) {
     });
       
     app.post('/api/:api', (req, res) => {
+        console.log('maraPost');
 
         db.collection(dbName).insert(noteToAdd, (err, result) => {
             if (err) { 
@@ -102,6 +115,8 @@ module.exports = function(app, db) {
     });
 
     app.put('/api/:api/:id', (req, res) => {
+        console.log('maraPUT');
+
 /*         res.send({'error':'Service N/A'});
         return; */
         const id = req.params.id;
@@ -109,24 +124,31 @@ module.exports = function(app, db) {
         
         db.collection(dbName).findOneAndUpdate(details, noteToAdd, (err, result) => {
           if (err) {
-              logger(err);
-              res.send({'error':'An error has occurred'});
+            logger('[put]: ' + err);
+            res.send({'error':'An error has occurred'});
           } else {
               res.send(noteToAdd);
           } 
         });
       });  
       
-      app.patch('/api/:api/:id', (req, res) => {
-        const id = req.params.id;
-        const details = { '_id': new ObjectID(id) };
+      app.patch('/api/:api/:id?', (req, res) => {
+        
+        const criteria = {
+            name: noteToAdd.name,
+            month: noteToAdd.month,
+        };
+        const update = {
+            amount: (noteToAdd.amount ? parseFloat(0 + noteToAdd.amount) : 0)
+        }
+
         //db.collection(dbName).findOneAndUpdate(details, {$inc: {'money': 15.23}, $set: {'name4': 'Meme41'}}, (err, result) => {
-        db.collection(dbName).findOneAndUpdate(details, {$set: noteToAdd}, (err, result) => {
+        db.collection(dbName).findOneAndUpdate(criteria, {"$inc": update}, (err, result) => {
           if (err) {
-              logger(err);
+              logger('[patch]: ' + err);
               res.send({'error':'An error has occurred'});
           } else {
-              res.send(noteToAdd);
+              res.send({c: criteria, u: update});
           } 
         });
       });  

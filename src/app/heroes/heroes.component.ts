@@ -9,25 +9,27 @@ import { HeroService } from '../hero.service';
   styleUrls: ['./heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
-  @Output() emit: EventEmitter<string> = new EventEmitter();
+  @Output() emit: EventEmitter<Hero> = new EventEmitter();
   heroes: Hero[];
 
   constructor(private heroService: HeroService) { }
 
-  public save(_id: string): void {
-    this.emit.emit(_id);
+  public save(hero: Hero): void {
+    this.emit.emit(hero);
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.getHeroes();
   }
 
-  getHeroes(): void {
+  public getHeroes(): void {
+    const date = new Date();
+    const month = date.getFullYear() * 100 + (date.getMonth() + 1);
     this.heroService.getHeroes()
     .subscribe(heroes => this.heroes = heroes);
   }
 
-  add(name: string): void {
+  public add(name: string): void {
     name = name.trim();
     if (!name) { return; }
     this.heroService.addHero({ name } as Hero)

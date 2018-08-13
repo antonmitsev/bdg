@@ -1,7 +1,7 @@
 const defaults       = require('./config/defaults');
 const express        = require('express');
 const MongoClient    = require('mongodb').MongoClient;
-const bodyParser     = require('body-parser');
+//const bodyParser     = require('body-parser');
 const db             = require('./config/db');
 
 const app            = express();
@@ -11,8 +11,26 @@ const port = 8000;
 global.logger = function (str) {
   console.log(`[${new Date().toISOString()}] ${str}`);
 }
+
+app.use(function(req, res, next) {
+  req.rawBody = '';
+  req.setEncoding('utf8');
+
+  req.on('data', function(chunk) { 
+    req.rawBody += chunk;
+  });
+
+  req.on('end', function() {
+    if (req.rawBody === '') {
+      req.rawBody = '{}';
+    }
+    req.rawBody = JSON.parse(req.rawBody);
+    next();
+  });
+});
+
 //Mega important :)
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.raw({ }));
 //app.use(bodyParser.text({type: 'application/json'}));
 
 let error = 0;

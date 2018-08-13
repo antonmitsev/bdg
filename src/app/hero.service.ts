@@ -9,8 +9,9 @@ import { MessageService } from './message.service';
 import { environment } from '../environments/environment';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+  //headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
 };
+
 
 @Injectable({ providedIn: 'root' })
 export class HeroService {
@@ -22,8 +23,8 @@ export class HeroService {
     private messageService: MessageService) { }
 
   /** GET heroes from the server */
-  getHeroes (): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.heroesUrl)
+  getHeroes (month: string = ''): Observable<Hero[]> {
+    return this.http.get<Hero[]>(`${this.heroesUrl}/${month}`)
       .pipe(
         tap(heroes => this.log('fetched heroes')),
         catchError(this.handleError('getHeroes', []))
@@ -69,8 +70,7 @@ export class HeroService {
 
   /** POST: add a new hero to the server */
   addHero (hero: Hero): Observable<Hero> {
-    const params = new HttpParams()
-    .append("name", hero.name);
+    const params = hero;
 
     return this.http.post<Hero>(this.heroesUrl, params, httpOptions).pipe(
       tap((hero: Hero) => this.log(`added hero w/ id=${hero._id}`)),

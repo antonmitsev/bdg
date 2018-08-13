@@ -14,12 +14,11 @@ export class KeyboardComponent implements OnInit {
   public screen: string;
   
 
-  ngOnInit(){
+  public ngOnInit(){
   }
 
   public save($event){
-    console.log($event);
-    this.heroService.updateHero({_id: $event})
+    this.heroService.updateHero({ ... $event,  amount: this.screen})
       .subscribe(() => this.c());
   }
 

@@ -7,7 +7,9 @@ module.exports = {
             db: 'hero-api',
             fields: {   // PUT data fields here. If FORM field corresponds DB field - use 'FIELD_NAME': false or 'FIELD_NAME_FORM': 'FIELD_NAME_DB'
                 'id': false,
-                'name': false
+                'name': false,
+                'month': false,
+                'amount': false
             }
         },
         'notes' : {
